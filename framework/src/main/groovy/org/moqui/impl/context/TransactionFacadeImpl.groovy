@@ -358,7 +358,7 @@ class TransactionFacadeImpl implements TransactionFacade {
             // NOTE: Since JTA 1.1 setTransactionTimeout() is local to the thread, so this doesn't need to be synchronized.
             if (timeout != null) ut.setTransactionTimeout(timeout)
             ut.begin()
-
+            logger.info("===begin TX, currentStatus=${ut.getStatus()},  property=${ut.properties}")
             TxStackInfo txStackInfo = getTxStackInfo()
             txStackInfo.transactionBegin = new Exception("Tx Begin Placeholder")
             txStackInfo.transactionBeginStartTime = System.currentTimeMillis()
@@ -393,7 +393,7 @@ class TransactionFacadeImpl implements TransactionFacade {
         TxStackInfo txStackInfo = getTxStackInfo()
         try {
             int status = ut.getStatus()
-            // logger.warn("================ commit TX, currentStatus=${status}")
+             logger.info("================ commit TX, currentStatus=${status}, property=${ut.properties}")
 
             txStackInfo.closeTxConnections()
             if (status == Status.STATUS_MARKED_ROLLBACK) {

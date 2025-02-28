@@ -388,6 +388,7 @@ class RestApi {
                         'X-Page-Max-Index':pageMaxIndex, 'X-Page-Range-Low':pageRangeLow, 'X-Page-Range-High':pageRangeHigh] as Map<String, Object>
 
                     if (masterName) {
+                        logger.info("In the master name field of rest run")
                         return new RestResult(ef.listMaster(masterName), headers)
                     } else {
                         return new RestResult(ef.list().getValueMapList(), headers)

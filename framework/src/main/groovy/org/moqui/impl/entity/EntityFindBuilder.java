@@ -772,7 +772,7 @@ public class EntityFindBuilder extends EntityQueryBuilder {
         if (connection == null) throw new IllegalStateException("Cannot make PreparedStatement, no Connection in place");
         finalSql = sqlTopLevel.toString();
         // if (this.mainEntityDefinition.getEntityName().contains("FooBar")) logger.warn("========= making find PreparedStatement for SQL: " + finalSql + "; parameters: " + parameters);
-        if (isDebugEnabled) logger.debug("making find PreparedStatement for SQL: " + finalSql);
+        logger.info("===making find PreparedStatement for SQL:===" + finalSql);
         try {
             ps = connection.prepareStatement(finalSql, entityFindBase.getResultSetType(), entityFindBase.getResultSetConcurrency());
             Integer maxRows = entityFindBase.getMaxRows();

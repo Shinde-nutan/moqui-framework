@@ -266,6 +266,7 @@ abstract class EntityFindBase implements EntityFind {
     @Override
     EntityCondition getWhereEntityCondition() { return getWhereEntityConditionInternal(getEntityDef()) }
     EntityConditionImplBase getWhereEntityConditionInternal(EntityDefinition localEd) {
+        logger.info("calling the get where condition internal from listInternal")
         boolean wecNull = (whereEntityCondition == null)
         int samSize = simpleAndMap != null ? simpleAndMap.size() : 0
 
@@ -1010,6 +1011,7 @@ abstract class EntityFindBase implements EntityFind {
     }
     @Override
     List<Map<String, Object>> listMaster(String name) {
+        logger.info("==calling the listMaster method for name: " + name)
         ExecutionContextImpl ec = efi.ecfi.getEci()
         ArtifactExecutionFacadeImpl aefi = ec.artifactExecutionFacade
         boolean enableAuthz = disableAuthz ? !aefi.disableAuthz() : false
@@ -1020,7 +1022,9 @@ abstract class EntityFindBase implements EntityFind {
                     ArtifactExecutionInfo.AT_ENTITY, ArtifactExecutionInfo.AUTHZA_VIEW, "list")
             aefi.pushInternal(aei, !ed.entityInfo.authorizeSkipView, false)
             try {
+                logger.info("calling listInternal for the given entity definition from listMaster: " + ed.getEntityName())
                 EntityList el = listInternal(ec, ed)
+                logger.info("final return value from the listInternal (getMasterValueList) " + el.getMasterValueList(name))
                 return el.getMasterValueList(name)
             } finally {
                 // pop the ArtifactExecutionInfo
@@ -1050,6 +1054,7 @@ abstract class EntityFindBase implements EntityFind {
         // add the manually specified ones, then the ones in the view entity's entity-condition
         if (orderByFields != null) orderByExpanded.addAll(orderByFields)
 
+        logger.info("Checking is the entity definition is a view entity: " + isViewEntity)
         if (isViewEntity) {
             MNode entityConditionNode = ed.entityConditionNode
             if (entityConditionNode != null) {
@@ -1094,6 +1099,7 @@ abstract class EntityFindBase implements EntityFind {
         } else if (cacheList != null) {
             el = cacheList
         } else {
+            logger.info("no cache available for this entity definition")
             // order by fields need to be selected (at least on some databases, Derby is one of them)
             int orderByExpandedSize = orderByExpanded.size()
             if (getDistinct() && fieldsToSelect != null && fieldsToSelect.size() > 0 && orderByExpandedSize > 0) {

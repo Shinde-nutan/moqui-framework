@@ -1082,7 +1082,9 @@ class WebFacadeImpl implements WebFacade {
                 }
             } else {
                 eci.contextStack.push(parmStack)
+                logger.info("========transaction properties brfore restApi.run(): " + eci.transaction.properties)
                 RestApi.RestResult restResult = eci.serviceFacade.restApi.run(extraPathNameList, eci)
+                logger.info("========transaction properties after restApi.run(): " + eci.transaction.properties)
                 eci.contextStack.pop()
                 response.addIntHeader('X-Run-Time-ms', (System.currentTimeMillis() - startTime) as int)
                 restResult.setHeaders(response)
